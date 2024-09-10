@@ -1,0 +1,32 @@
+#include <openssl/des.h>
+#include <stdio.h>
+#include <string.h>
+
+void des_encrypt_decrypt() {
+    DES_cblock key = { 0x13, 0x34, 0x57, 0x79, 0x9B, 0xBC, 0xDF, 0xF1 }; // Example key
+    DES_key_schedule schedule;
+
+    DES_set_key_unchecked(&key, &schedule);
+
+    // Message to be encrypted
+    const_DES_cblock plaintext = "Meet me very urgently";
+    DES_cblock ciphertext;
+    DES_cblock decryptedtext;
+
+    // Encrypt
+    DES_ecb_encrypt(&plaintext, &ciphertext, &schedule, DES_ENCRYPT);
+    printf("Encrypted text: ");
+    for(int i = 0; i < 8; i++) {
+        printf("%02x", ciphertext[i]);
+    }
+    printf("\n");
+
+    // Decrypt
+    DES_ecb_encrypt(&ciphertext, &decryptedtext, &schedule, DES_DECRYPT);
+    printf("Decrypted text: %s\n", decryptedtext);
+}
+
+int main() {
+    des_encrypt_decrypt();
+    return 0;
+}
