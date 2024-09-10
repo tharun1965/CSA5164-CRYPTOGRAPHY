@@ -1,0 +1,31 @@
+#include <openssl/blowfish.h>
+#include <stdio.h>
+#include <string.h>
+
+void blowfish_encrypt_decrypt() {
+    BF_KEY key;
+    unsigned char key_data[16] = "mysecretkey12345"; // Key for Blowfish
+
+    unsigned char plaintext[8] = "Hello123"; // 8-byte block for encryption
+    unsigned char ciphertext[8];
+    unsigned char decryptedtext[8];
+
+    BF_set_key(&key, 16, key_data);
+
+    // Encrypt
+    BF_ecb_encrypt(plaintext, ciphertext, &key, BF_ENCRYPT);
+    printf("Encrypted text: ");
+    for(int i = 0; i < 8; i++) {
+        printf("%02x", ciphertext[i]);
+    }
+    printf("\n");
+
+    // Decrypt
+    BF_ecb_encrypt(ciphertext, decryptedtext, &key, BF_DECRYPT);
+    printf("Decrypted text: %s\n", decryptedtext);
+}
+
+int main() {
+    blowfish_encrypt_decrypt();
+    return 0;
+}
