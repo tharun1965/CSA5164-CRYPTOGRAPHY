@@ -1,0 +1,35 @@
+#include <stdio.h>
+#include <string.h>
+
+void rail_fence_encrypt(char *text, int rails) {
+    int len = strlen(text);
+    char rail[rails][len];
+    memset(rail, '\n', sizeof(rail));
+
+    int dir_down = 0, row = 0, col = 0;
+
+    for (int i = 0; i < len; i++) {
+        rail[row][col++] = text[i];
+        if (row == 0 || row == rails - 1) dir_down = !dir_down;
+        row += (dir_down) ? 1 : -1;
+    }
+
+    printf("Encrypted message: ");
+    for (int i = 0; i < rails; i++) {
+        for (int j = 0; j < len; j++) {
+            if (rail[i][j] != '\n') {
+                printf("%c", rail[i][j]);
+            }
+        }
+    }
+    printf("\n");
+}
+
+int main() {
+    char text[] = "RAILFENCE";
+    int rails = 3;
+
+    printf("Original message: %s\n", text);
+    rail_fence_encrypt(text, rails);
+    return 0;
+}
