@@ -1,0 +1,31 @@
+#include <openssl/aes.h>
+#include <stdio.h>
+#include <string.h>
+
+void aes_encrypt_decrypt() {
+    AES_KEY encryptKey, decryptKey;
+    unsigned char key[16] = "myAESencryptionKey"; // 128-bit AES key
+    unsigned char plaintext[16] = "welcome to CSE"; // 16-byte block
+    unsigned char ciphertext[16];
+    unsigned char decryptedtext[16];
+
+    AES_set_encrypt_key(key, 128, &encryptKey);
+    AES_set_decrypt_key(key, 128, &decryptKey);
+
+    // Encrypt
+    AES_encrypt(plaintext, ciphertext, &encryptKey);
+    printf("Encrypted text: ");
+    for(int i = 0; i < 16; i++) {
+        printf("%02x", ciphertext[i]);
+    }
+    printf("\n");
+
+    // Decrypt
+    AES_decrypt(ciphertext, decryptedtext, &decryptKey);
+    printf("Decrypted text: %s\n", decryptedtext);
+}
+
+int main() {
+    aes_encrypt_decrypt();
+    return 0;
+}
